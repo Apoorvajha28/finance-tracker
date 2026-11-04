@@ -13,23 +13,52 @@ class Transaction:
         return self.amount > threshold
 
     def __repr__(self):
-        return f"Transaction(date = {self.date}, amount = {self.amount}, currency = {self.currency}, description = {self.description}, category = {self.category}\n)"
+        return f"Transaction({self.date}, {self.amount}, {self.currency}, {self.description}, {self.category}\n)"
+
+
+class Account:
+    def __init__(self, owner, currency = "EUR"):
+        self.owner = owner
+        self.currency = currency
+        self.transactions = []
+
+    def add(self, transaction):
+        self.transactions.append(transaction)
+
+    def total(self):
+        result = 0
+        for t in self.transactions:
+            result += t.amount
+        return result
+
+    def high_value(self, treshold = 200):
+        flagged = []
+        for t in self.transactions:
+            if t.is_high_value(treshold):
+                flagged.append(t)
+        return flagged
+
+    def __repr__(self):
+        return f"Account({self.owner}, {len(self.transactions)} transactions, total {self.total()} {self.currency})"
 
 
 if __name__ == "__main__":
-    transaction = [
-    Transaction("2026-11-01", 250, "EUR", "Flight ticket", "Travel"),
-    Transaction("2026-11-02", 12, "EUR", "Coffee", "Food"),
-    Transaction("2026-11-03", 800, "EUR", "Laptop", "Electronics"),
-    Transaction("2026-11-03", 45, "EUR", "Groceries", "Food")
-    ]
+    account = Account("Apoorva")
+    
+    
+    account.add(Transaction("2026-11-02", 250, "EUR", "Flight ticket", "Travel"))
+    account.add(Transaction("2026-11-02", 12, "EUR", "Coffee", "Food"))
+    account.add(Transaction("2026-11-03", 800, "EUR", "Laptop", "Electronics"))
+    account.add(Transaction("2026-11-03", 45, "EUR", "Groceries", "Food"))
+    
+    print(account)
+    print(f"\nTotal spent:{account.total()} EUR")
 
-    print(f"You have {len(transaction)} transactions.\n")
-    for t in transaction:
-        if t.is_high_value():
-            print(f"High value transaction: {t}")
-        else:
-            print(f"Regular transaction: {t}")
+    print("\nHigh value transactions:")
+    for t in account.high_value():
+        print(" ", t)
+
+
 
    
    
