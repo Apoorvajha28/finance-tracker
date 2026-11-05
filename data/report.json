@@ -1,0 +1,13 @@
+{
+  "owner": "Apoorva",
+  "currency": "EUR",
+  "transaction_count": 5,
+  "total_spent": 1127.49,
+  "by_category": {
+    "Travel": 250.0,
+    "Food": 57.5,
+    "Electronics": 800.0,
+    "Education": 19.99
+  },
+  "high_value_count": 2
+}

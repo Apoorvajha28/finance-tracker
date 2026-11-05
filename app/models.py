@@ -2,7 +2,7 @@
 # This file holds the "building blocks" (classes) of our finance tracker.
 
 import csv
-
+import json
 
 class Transaction:
     def __init__(self, date, amount, currency, description, category ):
@@ -62,6 +62,25 @@ class Account:
                 flagged.append(t)
         return flagged
 
+    def summary(self):
+        by_category = {}
+        for t in self.transactions:
+            by_category[t.category] = by_category.get(t.category,0) + t.amount
+        return {
+            "owner": self.owner,
+            "currency": self.currency,
+            "transaction_count": len(self.transactions),
+            "total_spent": self.total(),
+            "by_category": by_category,
+            "high_value_count": len(self.high_value()),
+        }
+
+    def save_report(self, filepath):
+        with open(filepath, "w") as file:
+            json.dump(self.summary(), file, indent=2) 
+        print(f"Save report to {filepath}")      
+
+    
     def __repr__(self):
         return f"Account({self.owner}, {len(self.transactions)} transactions, total {self.total()} {self.currency})"
 
@@ -72,11 +91,14 @@ if __name__ == "__main__":
     
 
     print(f"\n{account}")
-    print(f"\nTotal spent:{account.total()} EUR")
+   
+    print("\nSummary:")
+    report = account.summary()
+    for key, value in report.items():
+        print(f"  {key}: {value}")
 
-    print("\nHigh value transactions:")
-    for t in account.high_value():
-        print(f"  {t}")
+
+    account.save_report("data/report.json")
 
 
 
