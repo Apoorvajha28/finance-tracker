@@ -1,6 +1,9 @@
 # models.py
 # This file holds the "building blocks" (classes) of our finance tracker.
 
+import csv
+
+
 class Transaction:
     def __init__(self, date, amount, currency, description, category ):
         if amount <= 0:
@@ -30,6 +33,22 @@ class Account:
     def add(self, transaction):
         self.transactions.append(transaction)
 
+    def load_csv(self, filepath):
+        loaded = 0
+        with open(filepath, newline="") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                try:
+                    transaction = Transaction(
+                        row["date"], float(row["amount"]), row["currency"], row["description"], row["category"]
+                    )
+                    self.add(transaction)
+                    loaded += 1
+                except ValueError as error:
+                    print(f"Skipped a row: {error}")
+        print(f"loaded {loaded} transactions from {filepath}")
+
+
     def total(self):
         result = 0
         for t in self.transactions:
@@ -49,26 +68,15 @@ class Account:
 
 if __name__ == "__main__":
     account = Account("Apoorva")
+    account.load_csv("data/transactions.csv")
     
-    rows = [
-
-        ("2026-11-02", 250, "EUR", "Flight ticket", "Travel"),
-        ("2026-11-02", -12, "EUR", "Oops typo", "Food"),
-        ("2026-11-03", 800, "EUR", "", "Electronics"),
-        ("2026-11-03", 45, "EUR", "Groceries", "Food")
-    ]
-
-    for row in rows:
-        date, amount, currency, description, category = row
-        try:
-            transaction = Transaction(date, amount, currency, description, category)
-            account.add(transaction)
-            print(f"Added transaction: {description}")
-        except ValueError as error:
-            print(f"Skipped transaction: {error}")
 
     print(f"\n{account}")
     print(f"\nTotal spent:{account.total()} EUR")
+
+    print("\nHigh value transactions:")
+    for t in account.high_value():
+        print(f"  {t}")
 
 
 

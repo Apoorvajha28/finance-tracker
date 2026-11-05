@@ -1,0 +1,9 @@
+date,amount,currency,description,category
+2026-11-01,250,EUR,Flight ticket,Travel
+2026-11-01,12.50,EUR,Coffee,Food
+2026-11-02,800,EUR,Laptop,Electronics
+2026-11-02,-5,EUR,Bad refund,Food
+2026-11-03,45,EUR,Groceries,Food
+2026-11-03,abc,EUR,Weird amount,Shopping
+2026-11-04,30,EUR,,Transport
+2026-11-05,19.99,EUR,Book,Education
