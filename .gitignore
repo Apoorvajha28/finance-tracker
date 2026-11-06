@@ -11,3 +11,4 @@ __pycache__/
 
 # macOS junk
 .DS_Store
+data/finance.db
