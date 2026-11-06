@@ -41,7 +41,7 @@ def load_account(owner):
     for row in rows:
         date, amount, currency, description, category = row
         account.add(Transaction(date, amount, currency, description, category))
-        return account
+    return account
 
 
 if __name__ == "__main__":
