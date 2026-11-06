@@ -66,19 +66,19 @@ class Account:
         by_category = {}
         for t in self.transactions:
             by_category[t.category] = by_category.get(t.category,0) + t.amount
-        return {
-            "owner": self.owner,
-            "currency": self.currency,
-            "transaction_count": len(self.transactions),
-            "total_spent": self.total(),
-            "by_category": by_category,
-            "high_value_count": len(self.high_value()),
-        }
+            return {
+                "owner": self.owner,
+                "currency": self.currency,
+                "transaction_count": len(self.transactions),
+                "total_spent": self.total(),
+                "by_category": by_category,
+                "high_value_count": len(self.high_value()),
+            }
 
-    def save_report(self, filepath):
-        with open(filepath, "w") as file:
-            json.dump(self.summary(), file, indent=2) 
-        print(f"Save report to {filepath}")      
+        def save_report(self, filepath):
+            with open(filepath, "w") as file:
+                json.dump(self.summary(), file, indent=2) 
+            print(f"Save report to {filepath}")      
 
     
     def __repr__(self):
